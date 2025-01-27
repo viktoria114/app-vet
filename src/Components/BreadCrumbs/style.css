@@ -1,0 +1,13 @@
+/* Elimina márgenes globales */
+html, body {
+    margin: 0;
+}
+
+.catimage {
+    background: url("catcool.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; /* Usar cover para llenar el área de forma proporcional */
+    width: 100%;
+    
+}
