@@ -1,37 +1,14 @@
-import { useEffect, useState } from "react";
-import { FichaCliente } from "../../Components/FichaCliente/FichaCliente";
-import axios from "axios";
-import { baseURL, clientesURL } from "../../App.jsx";
-import { Box, Container, Pagination } from "@mui/material";
+import { Box} from "@mui/material";
 import { BreadCrumbs } from "../../Components/BreadCrumbs/BreadCrumbs.jsx";
-import { NewMascota } from "../../Components/NewMascota/NewMascota.jsx";
 import theme from '../../services/theme.js'
 import { ThemeProvider } from "@emotion/react";
-
-const getClientes = async () => {
-  try {
-    const response = await axios.get(`${baseURL}${clientesURL}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return []; // Devuelve un arreglo vacío si hay error
-  }
-};
+import { NewCliente } from "../../Components/NewCliente/NewCliente.jsx";
+import { ListaClientes } from "../../Components/ListaClientes/ListaClientes.jsx";
+import { useClientes } from "../../hooks/useClientes.jsx";
 
 
 export const Clientes = () => {
-  const [clientes, setClientes] = useState([]); // Estado para almacenar los clientes
-  const [loading, setLoading] = useState(true); // Estado para el indicador de carga
-
-  useEffect(() => {
-    const fetchClientes = async () => {
-      const data = await getClientes();
-      setClientes(data); // Guarda los datos en el estado
-      setLoading(false); // Desactiva el indicador de carga
-    };
-
-    fetchClientes(); // Llama a la función
-  }, []);
+const {loading, clientes} = useClientes()
 
   if (loading) {
     return <p>Cargando clientes...</p>; // Mensaje mientras se cargan los datos
@@ -40,52 +17,10 @@ export const Clientes = () => {
   return (
     <>
     <ThemeProvider theme={theme}>
-    <BreadCrumbs page={"Clientes"}></BreadCrumbs>
-    <Container>
-      <Box
-        sx={{
-          bgcolor: "#f8f9fd",
-          boxShadow: 1,
-          borderRadius: 2,
-          p: 2,
-          minWidth: 300,
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)", // Tres columnas iguales
-          gap: 2, // Espaciado entre las tarjetas
-          
-        }}
-      >
-        {clientes.map((cliente) => (
-          <FichaCliente key={cliente.id} cliente={cliente} />
-        ))}
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center", // Centra horizontalmente
-          alignItems: "center", // Opcional: centra verticalmente si es necesario
-          mt: 3, // Margen superior para separar la paginación de las tarjetas
-        }}
-      >
-        <Pagination
-          count={5}
-          color="secondary"
-          
-          sx={{
-            "& .MuiPaginationItem-root": {
-              fontFamily: "Montserrat, sans-serif", // Cambia la fuente
-              color: "gray", // Cambia el color del texto
-            },
-            "& .Mui-selected": {
-              color: "white", // Texto blanco en la página seleccionada
-              
-            },
-          }}
-        />
-      </Box>
-    </Container>
+    <BreadCrumbs firstpage={"Clientes"}></BreadCrumbs>
+    <ListaClientes clientes={clientes}></ListaClientes>
     <Box sx={{mt:10}}></Box>
-    <NewMascota></NewMascota>
+    <NewCliente></NewCliente>
     </ThemeProvider>
     </>
   );
