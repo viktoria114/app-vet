@@ -1,28 +1,11 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { baseURL, mascotasURL } from "../../App.jsx";
-import { Box, Container, Pagination } from "@mui/material";
-import { FichaMascota } from "../../Components/FichaMascota/FichaMascota.jsx";
 import { BreadCrumbs } from "../../Components/BreadCrumbs/BreadCrumbs.jsx";
 import { ThemeProvider } from "@emotion/react";
-import theme from '../../services/theme.js'
+import theme from "../../services/theme.js";
 import { ListaMascotas } from "../../Components/ListaMascotas/ListaMascotas.jsx";
-
-
+import { useMascotas } from "../../hooks/useMascotas.jsx";
 
 export const Mascotas = () => {
-  const [mascotas, setMascotas] = useState([]); // Estado para almacenar las mascotas
-  const [loading, setLoading] = useState(true); // Estado para el indicador de carga
-
-    useEffect(() => {
-      const fetchMascotas = async () => {
-        const data = await getMascotas();
-        setMascotas(data); // Guarda los datos en el estado
-        setLoading(false); // Desactiva el indicador de carga
-      };
-  
-      fetchMascotas(); // Llama a la función
-    }, []);
+  const { loading, mascotas } = useMascotas();
 
   if (loading) {
     return <p>Cargando mascotas...</p>; // Mensaje mientras se cargan los datos
@@ -30,10 +13,10 @@ export const Mascotas = () => {
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-    <BreadCrumbs firstpage={"Mascotas"}></BreadCrumbs>
-   <ListaMascotas></ListaMascotas>
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <BreadCrumbs firstpage={"Mascotas"}></BreadCrumbs>
+        <ListaMascotas mascotas={mascotas}></ListaMascotas>
+      </ThemeProvider>
     </>
   );
 };
