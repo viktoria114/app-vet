@@ -8,15 +8,7 @@ import { ThemeProvider } from "@emotion/react";
 import theme from '../../services/theme.js'
 import { ListaMascotas } from "../../Components/ListaMascotas/ListaMascotas.jsx";
 
-const getMascotas = async () => {
-  try {
-    const response = await axios.get(`${baseURL}${mascotasURL}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return []; // Devuelve un arreglo vacío si hay error
-  }
-};
+
 
 export const Mascotas = () => {
   const [mascotas, setMascotas] = useState([]); // Estado para almacenar las mascotas
