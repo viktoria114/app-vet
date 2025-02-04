@@ -9,17 +9,20 @@ Pet Care es una plataforma diseñada para ayudar a gestionar clientes y mascotas
 - Fácil contacto con correo y teléfono
 - Respuesta rápida y eficiente
 
+
   Tecnologias utilizadas
 
 - FrontEnd:  React, React Router, Axios, Material-UI.
+  
 
   Cómo Instalar y Usar
   
-1. Clonar el repositorio: git clone https://github.com/viktoria114/API-Vet.git
+1. Clonar el repositorio: git clone https://github.com/viktoria114/app-vet.git
 
 2. Instalar dependencias: npm install
 
 3. Configurar variables de entorno: Crea un archivo .env en la raíz del backend con estas variables:
+   
    VITE_BASE_URL = https://api-vet-six.vercel.app
 VITE_CLIENTES = /clientes
 VITE_MASCOTAS = /mascotas
@@ -28,5 +31,39 @@ VITE_MASCOTAS = /mascotas
 
 https://api-vet-six.vercel.app (para usar desde vercel)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+usuario: admin
+
+contraseña: admin
+
+
+Estructura del Proyecto
+
+app-vet/
+├── public/
+├── src/ 
+│ |── assets/
+│ ├── Components/
+│ ├── hooks/
+│ ├── pages/
+│ ├── services/
+│ ├── store/
+│ ├── App.jsx
+│ ├── main.jsx
+├── .env #archivo oculto de las variables de entorno
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── README.md
+├── vite.config.js
+
+
+Próximos Pasos
+- Autenticación con Token
+- Página para usuarios no administrativos
+- Notificaciones
+- Scroll Snap
+- Modificación de mascotas
+- Búsqueda por nombre
+- Creación de citas medicas, vacunas, historial médico, etc.
