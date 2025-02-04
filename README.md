@@ -29,7 +29,7 @@ VITE_MASCOTAS = /mascotas
 
 4. Ejecutar el proyecto (local): npm run dev
 
-https://api-vet-six.vercel.app (para usar desde vercel)
+http://app-vet.vercel.app (para usar desde vercel)
 
 usuario: admin
 
