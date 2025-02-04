@@ -10,12 +10,12 @@ Pet Care es una plataforma diseñada para ayudar a gestionar clientes y mascotas
 - Respuesta rápida y eficiente
 
 
-  Tecnologias utilizadas
+**Tecnologias utilizadas**
 
 - FrontEnd:  React, React Router, Axios, Material-UI.
   
 
-  Cómo Instalar y Usar
+  **Cómo Instalar y Usar**
   
 1. Clonar el repositorio: git clone https://github.com/viktoria114/app-vet.git
 
@@ -36,30 +36,30 @@ usuario: admin
 contraseña: admin
 
 
-Estructura del Proyecto
+**Estructura del Proyecto**
 
-app-vet/
-├── public/
-├── src/ 
-│ |── assets/
-│ ├── Components/
-│ ├── hooks/
-│ ├── pages/
-│ ├── services/
-│ ├── store/
-│ ├── App.jsx
-│ ├── main.jsx
-├── .env #archivo oculto de las variables de entorno
-├── .gitignore
-├── eslint.config.js
-├── index.html
-├── package-lock.json
-├── package.json
-├── README.md
-├── vite.config.js
+- app-vet/
+- ├── public/
+- ├── src/ 
+- │ |── assets/
+- │ ├── Components/
+- │ ├── hooks/
+- │ ├── pages/
+- │ ├── services/
+- │ ├── store/
+- │ ├── App.jsx
+- │ ├── main.jsx
+- ├── .env #archivo oculto de las variables de entorno
+- ├── .gitignore
+- ├── eslint.config.js
+- ├── index.html
+- ├── package-lock.json
+- ├── package.json
+- ├── README.md
+- ├── vite.config.js
 
 
-Próximos Pasos
+**Próximos Pasos**
 - Autenticación con Token
 - Página para usuarios no administrativos
 - Notificaciones
@@ -67,3 +67,8 @@ Próximos Pasos
 - Modificación de mascotas
 - Búsqueda por nombre
 - Creación de citas medicas, vacunas, historial médico, etc.
+
+
+**Créditos y despliegue**
+Por: Arancio Oviedo María Victoria
+GitHub: https://github.com/viktoria114
