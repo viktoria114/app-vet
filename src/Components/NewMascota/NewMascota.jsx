@@ -26,6 +26,7 @@ export const NewMascota = ({ id }) => {
     postImage,
     handleSubmit,
     loading,
+    handleLimpiar
   } = useNewMascota({ id });
 
   return (
@@ -181,6 +182,7 @@ export const NewMascota = ({ id }) => {
             sx={{ bgcolor: "#FFFFFF", height: 50 }}
             loadingPosition="start"
             startIcon={<ClearIcon />}
+            onClick={handleLimpiar}
           >
             Limpiar
           </Button>

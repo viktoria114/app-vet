@@ -57,8 +57,18 @@ export const useNewMascota = ({ id }) => {
   
     setLoading(false);
   };
+
+  const handleLimpiar = () => {
+    setMascotasForm({
+      nombre: "",
+      especie: "",
+      raza: "",
+      edad: "",
+      myFile:  postImage.myFile,
+    });
+  }
   
-    return {mascotasForm, handleChange, handleUpload, postImage, handleSubmit, loading};
+    return {mascotasForm, handleChange, handleUpload, postImage, handleSubmit, loading, handleLimpiar};
 }
 
 
