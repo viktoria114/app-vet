@@ -1,111 +1,116 @@
 import { useParams } from "react-router-dom";
 import { BreadCrumbs } from "../../Components/BreadCrumbs/BreadCrumbs";
-import { Box, Container, Grid, ThemeProvider, Typography } from "@mui/material";
-import theme from "../../services/theme";
-import { FichaMascota } from "../../Components/FichaMascota/FichaMascota";
-import { useClientesDetalle } from "../../hooks/useClientesDetalle";
+import {
+  Box,
+  Container,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import { Contacto } from "../../Components/Contacto/Contacto";
 import { NewMascota } from "../../Components/NewMascota/NewMascota";
+import { ListaMascotas } from "../../Components/ListaMascotas/ListaMascotas";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchClienteDetalle,
+  fetchMascotasDeCliente,
+  clearClienteDetalle,
+} from "../../store/slices/ClienteDetalleSlice/ClienteDetalleSlice.jsx";
 
 export const ClientesDetalle = () => {
   const { id } = useParams();
-  const { mascotasDeCliente, cantMascotas, cliente, loading } =
-    useClientesDetalle({ id });
+  const dispatch = useDispatch();
 
-  if (loading) {
-    return <p>Cargando clientes...</p>; // Mensaje mientras se cargan los datos
+  const { cliente, mascotasDeCliente, cantMascotas, loading } = useSelector(
+    (state) => state.clienteDetalle
+  );
+
+  useEffect(() => {
+    dispatch(fetchClienteDetalle(id));
+    dispatch(fetchMascotasDeCliente(id));
+
+    return () => {
+      dispatch(clearClienteDetalle());
+    };
+  }, [dispatch, id]);
+
+  if (loading || !cliente) {
+    return (
+      <>
+        <LinearProgress color="secondary" value={loading} />
+      </>
+    );
   }
 
   if (cantMascotas) {
     return (
       <>
-        <ThemeProvider theme={theme}>
-          <BreadCrumbs
-            firstpage={"clientes"}
-            secondpage={cliente.nombre}
-          ></BreadCrumbs>
-
-          <Contacto cliente={cliente} cantMascotas={cantMascotas}></Contacto>
-
-          <Container sx={{ mt: 10 }}>
-            <Grid>
-              <Grid xs={2}>
-                <Typography variant="h2" sx={{ fontWeight: 500 }}>
-                  Lista de Mascotas
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={4}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  textAlign: "center",
-                }}
-              >
-                <Typography variant="h4" sx={{ fontWeight: 400, mb: 2 }}>
-                  Mascotas
-                </Typography>
-                <Box
-                  sx={{
-                    bgcolor: "#f8f9fd",
-                    boxShadow: 1,
-                    borderRadius: 2,
-                    p: 2,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    maxWidth: 100,
-                    width: "100px", // Esto asegura un ancho fijo si lo necesitas
-                  }}
-                >
-                  <Typography variant="h3" sx={{ fontWeight: 600 }}>
-                    {cantMascotas}
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Box
-              sx={{
-                bgcolor: "#f8f9fd",
-                boxShadow: 1,
-                borderRadius: 2,
-                p: 2,
-                minWidth: 300,
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)", // Tres columnas iguales
-                gap: 2, // Espaciado entre las tarjetas
-                mt: 5,
-              }}
-            >
-              {mascotasDeCliente.map((mascota) => (
-                <FichaMascota key={mascota.id} mascota={mascota} />
-              ))}
-            </Box>
-            <NewMascota id={id} />
-          </Container>
-        </ThemeProvider>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <ThemeProvider theme={theme}>
         <BreadCrumbs
-          firstpage={"clientes"}
+          firstpage={"Clientes"}
           secondpage={cliente.nombre}
         ></BreadCrumbs>
 
         <Contacto cliente={cliente} cantMascotas={cantMascotas}></Contacto>
 
         <Container sx={{ mt: 10 }}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={8}>
+              <Typography
+                sx={{
+                  typography: { xs: "h3", sm: "h2" },
+                  fontWeight: { sm: 500, xs: 600 },
+                }}
+              >
+                Mascotas
+              </Typography>
+            </Grid>
+
+            <Grid
+              item
+              xs={4}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <Box
+                sx={{
+                  bgcolor: "#f8f9fd",
+                  boxShadow: 1,
+                  borderRadius: 2,
+                  p: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  maxWidth: 100,
+                  width: "100px",
+                  mb: "15px",
+                }}
+              >
+                <Typography variant="h3" sx={{ fontWeight: 600 }}>
+                  {cantMascotas}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <ListaMascotas mascotas={mascotasDeCliente} />
           <NewMascota id={id} />
         </Container>
-      </ThemeProvider>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <BreadCrumbs
+        firstpage={"Clientes"}
+        secondpage={cliente.nombre}
+      ></BreadCrumbs>
+
+      <Contacto cliente={cliente} cantMascotas={cantMascotas}></Contacto>
+
+      <Container sx={{ mt: 10 }}>
+        <NewMascota id={id} />
+      </Container>
     </>
   );
 };

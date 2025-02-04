@@ -1,120 +1,140 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import PetsIcon from "@mui/icons-material/Pets";
-import {Tab, Tabs } from "@mui/material";
+import {
+  Button,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Tab,
+  Tabs,
+  ThemeProvider,
+} from "@mui/material";
 import { Outlet } from "react-router-dom";
+import theme from "../../services/theme";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useNavBar } from "../../hooks/useNavBar";
 
-function samePageLinkNavigation(event) {
-  if (
-    event.defaultPrevented ||
-    event.button !== 0 || // ignore everything but left-click
-    event.metaKey ||
-    event.ctrlKey ||
-    event.altKey ||
-    event.shiftKey
-  ) {
-    return false;
-  }
-  return true;
-}
-
-function LinkTab(props) {
-  return (
-    <Tab
-      component="a"
-      onClick={(event) => {
-        // Routing libraries handle this, you can remove the onClick handle when using them.
-        if (samePageLinkNavigation(event)) {
-          event.preventDefault();
-        }
-      }}
-      aria-current={props.selected && "page"}
-      {...props}
-    />
-  );
-}
-
-LinkTab.propTypes = {
-  selected: PropTypes.bool,
+const styleTab = {
+  height: "100px",
+  fontWeight: 700,
+  color: "black",
+  display: { xs: "none", sm: "flex" },
 };
 
 export const NavBar = () => {
-  const [value, setValue] = React.useState("one");
-
-  const handleChange = (event, newValue) => {
-    // event.type can be equal to focus with selectionFollowsFocus.
-    if (
-      event.type !== "click" ||
-      (event.type === "click" && samePageLinkNavigation(event))
-    ) {
-      setValue(newValue);
-    }
-  };
-
+  const {
+    toggleDrawer,
+    menuItems,
+    currentTab,
+    handleChange,
+    handleSesión,
+    navigate,
+    open
+  } = useNavBar();
   return (
     <>
-    <AppBar position="fixed" color="white" sx={{ 
-         bgcolor:"white"
-      }}>
-      <Container
-        maxWidth="xl"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <PetsIcon
-            color="secondary"
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-          />
-          <Typography
-          className="Titulo"
-            variant="h6"
-            noWrap
-            component="a"
+      <ThemeProvider theme={theme}>
+        <AppBar
+          position="sticky"
+          color="white"
+          sx={{ bgcolor: "white", zIndex: 1100 }}
+        >
+          <Container
+            maxWidth="xl"
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "'Montserrat', sans-serif",
-              fontWeight: 800,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            PET-CARE
-          </Typography>
-        </Box>
-        <Box sx={{ width: "100%", height: "100px" }}>
-          <Tabs
-         
-		  sx={{
-        height: "100px",
-       
-      }}
-            value={value}
-            onChange={handleChange}
-            aria-label="nav tabs example"
-            role="navigation"
-            textColor="secondary"
-            indicatorColor="secondary"
-           
-          >
-            <Tab label="Inicio" href="/inicio" sx={{ height: "100px" , fontFamily: "'Montserrat', sans-serif",  fontWeight: 700, color: "black" }} />
-            <Tab label="Clientes" href="/clientes" sx={{ height: "100px" , fontFamily: "'Montserrat', sans-serif",fontWeight: 700, color: "black"}}/>
-            <Tab label="Mascotas" href="/mascotas" sx={{ height: "100px" , fontFamily: "'Montserrat', sans-serif",fontWeight: 700, color: "black"}}/>
-          </Tabs>
-        </Box>
-      </Container>
-      
-    </AppBar>
-    <Outlet/>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <PetsIcon color="secondary" sx={{ mr: 1 }} />
+              <Typography
+                className="Titulo"
+                variant="h6"
+                noWrap
+                component="a"
+                sx={{
+                  mr: 2,
+                  fontWeight: 800,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                PET-CARE
+              </Typography>
+            </Box>
+            <Box sx={{ width: "100%", height: "100px" }}>
+              <Tabs
+                sx={{ height: "100px" }}
+                value={currentTab}
+                onChange={handleChange}
+                role="navigation"
+                textColor="secondary"
+                indicatorColor="secondary"
+              >
+                <Tab label="Inicio" value="one" sx={styleTab} />
+                <Tab label="Clientes" value="two" sx={styleTab} />
+                <Tab label="Mascotas" value="three" sx={styleTab} />
+                <Button
+                  color="inherit"
+                  sx={{
+                    marginLeft: "auto",
+                    display: { xs: "none", sm: "flex" },
+                  }}
+                  onClick={handleSesión}
+                >
+                  Cerrar Sesión
+                </Button>
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  sx={{
+                    marginLeft: "auto",
+                    display: { xs: "flex", sm: "none" },
+                    height: "100px",
+                  }}
+                  onClick={toggleDrawer()}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Tabs>
+
+              <Drawer
+                open={open}
+                onClose={toggleDrawer()}
+                anchor="top"
+                sx={{ zIndex: 1000 }} // Menor zIndex que la Navbar
+              >
+                <Box
+                  sx={{ width: "auto", mt: 13 }}
+                  role="presentation"
+                  onClick={toggleDrawer()}
+                >
+                  <List>
+                    {menuItems.map(({ text, path }) => (
+                      <ListItem key={text} disablePadding>
+                        <ListItemButton onClick={() => navigate(path)}>
+                          <ListItemText primary={text} />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              </Drawer>
+            </Box>
+          </Container>
+        </AppBar>
+        <Outlet />
+      </ThemeProvider>
     </>
   );
 };

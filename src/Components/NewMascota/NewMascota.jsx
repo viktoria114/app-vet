@@ -12,78 +12,21 @@ import {
   Typography,
 } from "@mui/material";
 import "./style.css";
-import { useEffect, useState } from "react";
-import { baseURL, mascotasURL } from "../../App";
-import axios from "axios";
 import profile from "../../assets/profile.jpg";
+import { useNewMascota } from "../../hooks/useNewMascota";
+import { styleBox3 } from "../NewCliente/NewCliente";
+import AddIcon from "@mui/icons-material/Add";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export const NewMascota = ({ id }) => {
-  const [postImage, setPostImage] = useState({ myFile: "" });
-
-  useEffect(() => {
-    // Convertir la imagen predeterminada a base64 al montar el componente
-    const convertDefaultImage = async () => {
-      try {
-        const response = await fetch(profile);
-        const blob = await response.blob();
-        const base64 = await convertToBase64(blob);
-        setPostImage({ myFile: base64 }); // Guardar la imagen predeterminada en base64
-      } catch (error) {
-        console.error(
-          "Error al convertir la imagen predeterminada a base64:",
-          error
-        );
-      }
-    };
-
-    convertDefaultImage();
-  }, []);
-
-  const createPost = async (newImage) => {
-    const newMascota = {
-      nombre: mascotasForm.nombre,
-      especie: mascotasForm.especie,
-      raza: mascotasForm.raza,
-      edad: mascotasForm.edad,
-      cliente_id: id,
-      myFile: newImage.myFile, // Incluye la imagen en Base64 aquí
-    };
-
-    try {
-      await axios.post(`${baseURL}${mascotasURL}`, newMascota);
-      console.log("Mascota creada correctamente");
-    } catch (error) {
-      console.error("Error al crear la mascota:", error);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const imageToUpload = postImage.myFile;
-    createPost({ myFile: imageToUpload });
-    console.log("Imagen subida:", imageToUpload);
-  };
-
-  const handleUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    setPostImage({ myFile: base64 }); // Asegúrate de usar la clave correcta
-  };
-
-  // Estados iniciales
-  const [mascotasForm, setMascotasForm] = useState({
-    nombre: "",
-    especie: "",
-    raza: "",
-    edad: "",
-    pcliente_id: "67897c02413710d0ba88499b",
-    myFile: postImage,
-  });
-
-  const handleChange = (e) => {
-    setMascotasForm({ ...mascotasForm, [e.target.name]: e.target.value });
-    console.log(mascotasForm);
-  };
+  const {
+    mascotasForm,
+    handleChange,
+    handleUpload,
+    postImage,
+    handleSubmit,
+    loading,
+  } = useNewMascota({ id });
 
   return (
     <Container className="radial-ellipse-side" bgcolor="star.png">
@@ -94,23 +37,15 @@ export const NewMascota = ({ id }) => {
       <br></br>
       <br></br>
       <br></br>
-      <Box
-        sx={{
-          bgcolor: "rgba(255, 255, 255, 0,5)",
-          boxShadow: 1,
-          borderRadius: 2,
-          p: 6,
-          minWidth: 300,
-        }}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
+      <Box sx={styleBox3}>
+        <Grid container spacing={2} direction={{ xs: "column", sm: "row" }}>
+          <Grid item xs={12} sm={8}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
               Registrar Nueva Mascota
             </Typography>
 
             <TextField
-              label="Nombre"
+              label="Nombre*"
               variant="outlined"
               sx={{ bgcolor: "white", borderRadius: 2, mt: "10px" }}
               InputLabelProps={{
@@ -122,7 +57,7 @@ export const NewMascota = ({ id }) => {
               onChange={(e) => handleChange(e)}
             />
             <TextField
-              label="Especie"
+              label="Especie*"
               variant="outlined"
               sx={{ bgcolor: "white", borderRadius: 2, mt: "10px" }}
               InputLabelProps={{
@@ -178,11 +113,11 @@ export const NewMascota = ({ id }) => {
               />
             </Button>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
               Previsualización
             </Typography>
-            <Card sx={{ maxWidth: 345, mt: "20px" }}>
+            <Card sx={{ maxWidth: 345, mt: 2, mx: "auto" }}>
               <CardActionArea>
                 <CardMedia
                   component="img"
@@ -233,6 +168,10 @@ export const NewMascota = ({ id }) => {
             variant="contained"
             sx={{ bgcolor: "#B996EF", height: 50 }}
             onClick={handleSubmit}
+            disabled={!mascotasForm.nombre || !mascotasForm.especie}
+            loading={loading}
+            loadingPosition="start"
+            startIcon={<AddIcon />}
           >
             Crear
           </Button>
@@ -240,6 +179,8 @@ export const NewMascota = ({ id }) => {
             variant="contained"
             color="black"
             sx={{ bgcolor: "#FFFFFF", height: 50 }}
+            loadingPosition="start"
+            startIcon={<ClearIcon />}
           >
             Limpiar
           </Button>
@@ -255,16 +196,3 @@ export const NewMascota = ({ id }) => {
     </Container>
   );
 };
-
-function convertToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-}

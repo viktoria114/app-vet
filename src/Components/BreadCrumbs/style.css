@@ -4,7 +4,7 @@ html, body {
 }
 
 .catimage {
-    background: url("catcool.jpg");
+    background-image: url("../../../public/catcool.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover; /* Usar cover para llenar el área de forma proporcional */
