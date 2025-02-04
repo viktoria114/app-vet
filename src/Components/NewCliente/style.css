@@ -1,7 +1,7 @@
 .radial-ellipse-side {
   background-image: 
    
-    url("../../../public/estrellas.png"), /* Imagen de la estrella */
+    url("../../assets/estrellas.png"), /* Imagen de la estrella */
     radial-gradient(#B996EF, #ffffff 72%);/* Gradiente de fondo */
   background-repeat: no-repeat; /* Asegura que la estrella no se repita */
   background-position: center; /* Coloca la estrella en el centro */

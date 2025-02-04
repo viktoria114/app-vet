@@ -14,6 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useNewCliente } from "../../hooks/useNewCliente";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const styleBox3 = {
   bgcolor: "rgba(255, 255, 255, 0,5)",
   boxShadow: 1,

@@ -2,6 +2,7 @@
 import { Box, Container } from "@mui/material";
 import { FichaCliente } from "../FichaCliente/FichaCliente";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const styleBox1 = {
   bgcolor: "#f8f9fd",
   boxShadow: 1,

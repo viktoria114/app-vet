@@ -7,6 +7,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { FormLogin } from "../../Components/FormLogin/FormLogin";
+import catslogin from "../../assets/catslogin.jpg";
 
 const theme = createTheme({
   typography: {
@@ -28,7 +29,7 @@ export const Login = () => {
           <Box
             sx={{
               width: "70%",
-              backgroundImage: "url('/catslogin.jpg')",
+              backgroundImage: `url(${catslogin})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               display: "flex",

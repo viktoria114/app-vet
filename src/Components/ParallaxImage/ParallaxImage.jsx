@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
+import puppyinicio from "../../assets/puppyinicio.jpg"
 
 export default function ParallaxImage() {
   const [offsetY, setOffsetY] = useState(0);
@@ -30,7 +31,7 @@ export default function ParallaxImage() {
     >
       <Box
         component="img"
-        src="puppyinicio.jpg"
+        src={puppyinicio}
         alt="Imagen de fondo"
         sx={{
           position: "absolute",
